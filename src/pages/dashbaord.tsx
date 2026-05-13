@@ -1,18 +1,10 @@
 import { useState } from "react";
 import { useTheme } from "../Components/ThemeContext";
 
-const COLORS = {
-  purple: "#7c5cfc",
-  pink: "#f05b7a",
-  green: "#2ee8b5",
-  yellow: "#f5a623",
-};
+
 
 type EmployeeStatus = "Active" | "Remote" | "On Leave";
 type PayrollStatus = "Paid" | "Pending" | "Processing";
-type AttendanceStatus = "Present" | "Absent" | "Late" | "Remote" | "On Leave";
-type StatusType = EmployeeStatus | PayrollStatus | AttendanceStatus;
-
 const employees: Array<{
   id: number;
   initials: string;
@@ -321,10 +313,7 @@ function DashboardPage() {
   const hoverRow =
     theme === "dark" ? "hover:bg-[#1a1e2a]/50" : "hover:bg-gray-50";
 
-  const innerCard =
-    theme === "dark"
-      ? "bg-[#1a1e2a] border-[#252935]"
-      : "bg-gray-50 border-gray-200";
+  
 
   return (
     <div className="flex flex-col gap-4">

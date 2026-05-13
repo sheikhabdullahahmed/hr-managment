@@ -1,36 +1,39 @@
-import { useState } from 'react';
-import { loginUser } from '../services/imageApi';
-import '../styles/Auth.css';
+import { useState } from "react";
+import { loginUser } from "../services/imageApi";
+import "../styles/Auth.css";
 
 interface LoginProps {
   onSwitchToSignup: () => void;
 }
 
 function Login({ onSwitchToSignup }: LoginProps) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [error, setError] = useState('');
+  const [, setImageFile] = useState<File | null>(null);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
-      setError('Please fill in all fields');
+      setError("Please fill in all fields");
       return;
     }
-    
+
     try {
-      setError('');
+      setError("");
       const response = await loginUser({ email, password });
-      console.log('Login successful:', response);
-      alert('Login successful! Token: ' + (response.token ? 'Received' : 'No token'));
+      console.log("Login successful:", response);
+      alert(
+        "Login successful! Token: " +
+          (response.token ? "Received" : "No token"),
+      );
       // You can store the token and redirect here
-      localStorage.setItem('authToken', response.token || '');
+      localStorage.setItem("authToken", response.token || "");
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Login failed';
+      const message = err instanceof Error ? err.message : "Login failed";
       setError(message);
-      console.error('Login error:', err);
+      console.error("Login error:", err);
     }
   };
 
@@ -50,13 +53,13 @@ function Login({ onSwitchToSignup }: LoginProps) {
     <div className="auth-container">
       <div className="auth-card">
         <h1>Login</h1>
-        
+
         <div className="image-section">
           {imagePreview ? (
             <div className="auth-image">
               <img src={imagePreview} alt="Selected" />
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="remove-image-btn"
                 onClick={() => {
                   setImagePreview(null);
@@ -87,7 +90,7 @@ function Login({ onSwitchToSignup }: LoginProps) {
 
         <form onSubmit={handleSubmit} className="auth-form">
           {error && <div className="error-message">{error}</div>}
-          
+
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -118,7 +121,12 @@ function Login({ onSwitchToSignup }: LoginProps) {
         </form>
 
         <div className="auth-footer">
-          <p>Don't have an account? <button className="link-btn" onClick={onSwitchToSignup}>Sign up here</button></p>
+          <p>
+            Don't have an account?{" "}
+            <button className="link-btn" onClick={onSwitchToSignup}>
+              Sign up here
+            </button>
+          </p>
         </div>
       </div>
     </div>

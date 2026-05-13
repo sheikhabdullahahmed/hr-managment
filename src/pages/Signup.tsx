@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { signupUser } from '../services/imageApi';
-import '../styles/Auth.css';
+import { useState } from "react";
+import { signupUser } from "../services/imageApi";
+import "../styles/Auth.css";
 
 interface SignupProps {
   onSwitchToLogin: () => void;
@@ -8,18 +8,18 @@ interface SignupProps {
 
 function Signup({ onSwitchToLogin }: SignupProps) {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [error, setError] = useState('');
+  const [, setImageFile] = useState<File | null>(null);
+  const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,37 +36,45 @@ function Signup({ onSwitchToLogin }: SignupProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
-      setError('Please fill in all fields');
+
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      setError("Please fill in all fields");
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+      setError("Password must be at least 6 characters");
       return;
     }
 
     try {
-      setError('');
+      setError("");
       const response = await signupUser({
         name: formData.name,
         email: formData.email,
         password: formData.password,
       });
-      console.log('Signup successful:', response);
-      alert('Signup successful! Token: ' + (response.token ? 'Received' : 'No token'));
+      console.log("Signup successful:", response);
+      alert(
+        "Signup successful! Token: " +
+          (response.token ? "Received" : "No token"),
+      );
       // You can store the token and redirect here
-      localStorage.setItem('authToken', response.token || '');
+      localStorage.setItem("authToken", response.token || "");
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Signup failed';
+      const message = err instanceof Error ? err.message : "Signup failed";
       setError(message);
-      console.error('Signup error:', err);
+      console.error("Signup error:", err);
     }
   };
 
@@ -74,13 +82,13 @@ function Signup({ onSwitchToLogin }: SignupProps) {
     <div className="auth-container">
       <div className="auth-card">
         <h1>Sign Up</h1>
-        
+
         <div className="image-section">
           {imagePreview ? (
             <div className="auth-image">
               <img src={imagePreview} alt="Selected" />
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="remove-image-btn"
                 onClick={() => {
                   setImagePreview(null);
@@ -111,7 +119,7 @@ function Signup({ onSwitchToLogin }: SignupProps) {
 
         <form onSubmit={handleSubmit} className="auth-form">
           {error && <div className="error-message">{error}</div>}
-          
+
           <div className="form-group">
             <label htmlFor="name">Full Name</label>
             <input
@@ -170,7 +178,12 @@ function Signup({ onSwitchToLogin }: SignupProps) {
         </form>
 
         <div className="auth-footer">
-          <p>Already have an account? <button className="link-btn" onClick={onSwitchToLogin}>Login here</button></p>
+          <p>
+            Already have an account?{" "}
+            <button className="link-btn" onClick={onSwitchToLogin}>
+              Login here
+            </button>
+          </p>
         </div>
       </div>
     </div>
